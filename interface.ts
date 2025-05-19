@@ -100,26 +100,17 @@ export interface InterCampBack {
   partIds: Id[];
   petoIds: Id[];
   authorizeIds: Id[];
-  nongHeathIssueIds: Id[];
-  peeHeathIssueIds: Id[];
-  petoHeathIssueIds: Id[];
   nongDataLock: boolean;
-  nongShirtSize: Map<"S" | "M" | "L" | "XL" | "XXL" | "3XL", number>;
-  peeShirtSize: Map<"S" | "M" | "L" | "XL" | "XXL" | "3XL", number>;
-  petoShirtSize: Map<"S" | "M" | "L" | "XL" | "XXL" | "3XL", number>;
   nongModelIds: Id[];
   peeModelIds: Id[];
   petoModelIds: Id[];
-  nongPendingIds: Map<Id, string>; /////////////i
-  nongPassIds: Map<Id, string>; ////////////////////i
+  nongPendingIds: Map<Id, string>;
+  nongPassIds: Map<Id, string>;
   open: boolean;
-  peePassIds: Map<Id, Id>; //<userId,partId>               ////////////////////////i
+  peePassIds: Map<Id, Id>;
   songIds: Id[];
   nongSureIds: Id[];
   baanIds: Id[];
-  nongCampMemberCardIds: Id[];
-  peeCampMemberCardIds: Id[];
-  petoCampMemberCardIds: Id[];
   link: string | null;
   allDone: boolean;
   lockChangePickup: boolean;
@@ -128,7 +119,7 @@ export interface InterCampBack {
   actionPlanIds: Id[];
   workItemIds: Id[];
   nongPaidIds: Id[];
-  nongInterviewIds: Map<Id, string>; ////////////////////////////////i
+  nongInterviewIds: Map<Id, string>;
   registerModel: "noPaid" | "noInterview" | "all";
   memberStructure:
     | "nong->highSchool,pee->1year,peto->2upYear"
@@ -143,8 +134,6 @@ export interface InterCampBack {
   outRoundIds: Id[];
   _id: Id;
   campName: string;
-  nongSleepIds: Id[];
-  peeSleepIds: Id[];
   nongSleepModel:
     | "นอนทุกคน"
     | "เลือกได้ว่าจะค้างคืนหรือไม่"
@@ -168,13 +157,9 @@ export interface InterCampBack {
   currentPee: number;
   mdTime: Date;
   allPetoChatIds: Id[];
-  petoSleepIds: Id[];
   nongCampMemberCardHaveHeathIssueIds: Id[];
   peeCampMemberCardHaveHeathIssueIds: Id[];
   petoCampMemberCardHaveHeathIssueIds: Id[];
-  nongHaveBottleIds: Id[];
-  peeHaveBottleIds: Id[];
-  petoHaveBottleIds: Id[];
   choiceQuestionIds: Id[];
   textQuestionIds: Id[];
   nongAnswerPackIds: Id[];
@@ -233,7 +218,6 @@ export interface InterNongCampBack {
   nongIds: Id[];
   nongCampMemberCardIds: Id[];
   _id: Id;
-  //mapNongCampIdByUserId: Map<string, string>
   //public
 }
 export interface InterPartBack {
@@ -247,7 +231,7 @@ export interface InterPartBack {
   petoShirtSize: Map<"S" | "M" | "L" | "XL" | "XXL" | "3XL", number>;
   peeModelIds: Id[];
   petoModelId: Id;
-  mapPeeCampIdByBaanId: Map<Id, Id>; /////////////////i
+  mapPeeCampIdByBaanId: Map<Id, Id>;
   peeCampMemberCardIds: Id[];
   petoCampMemberCardIds: Id[];
   actionPlanIds: Id[];
@@ -381,6 +365,8 @@ export interface InterUser {
   displayOffsetId: Id;
   nongAnswerPackIds: Id[];
   peeAnswerPackIds: Id[];
+  gewertzSquareBookingIds: Id[];
+  departureAuths: Departure[];
   //private
 }
 export interface InterWorkingItem {
@@ -414,8 +400,8 @@ export interface InterBaanFront {
   nongIds: Id[];
   nongHeathIssueIds: Id[];
   peeHeathIssueIds: Id[];
-  nongShirtSize: InterSize; //
-  peeShirtSize: InterSize; //
+  nongShirtSize: InterSize;
+  peeShirtSize: InterSize;
   songIds: Id[];
   peeModelIds: Id[];
   nongModelId: Id;
@@ -490,10 +476,10 @@ export interface InterCampFront {
   nongModelIds: Id[];
   peeModelIds: Id[];
   petoModelIds: Id[];
-  nongPendingIds: MyMap[]; /////////////i
-  nongPassIds: MyMap[]; ////////////////////i
+  nongPendingIds: MyMap[];
+  nongPassIds: MyMap[];
   open: boolean;
-  peePassIds: MapObjectId[]; //<userId,partId>               ////////////////////////i
+  peePassIds: MapObjectId[];
   songIds: Id[];
   nongSureIds: Id[];
   baanIds: Id[];
@@ -1283,12 +1269,6 @@ export interface ScoreTextQuestions {
 export interface InterFood {
   campId: Id;
   isWhiteList: boolean;
-  peeIds: Id[];
-  nongIds: Id[];
-  petoIds: Id[];
-  nongHeathIssueIds: Id[];
-  peeHeathIssueIds: Id[];
-  petoHeathIssueIds: Id[];
   nongCampMemberCardIds: Id[];
   peeCampMemberCardIds: Id[];
   petoCampMemberCardIds: Id[];
@@ -1589,6 +1569,8 @@ export interface BasicUser {
   fridayActEn: boolean;
   fridayAuth: boolean;
   likeToSleepAtCamp: boolean;
+  gewertzSquareBookingIds: Id[];
+  departureAuths: Departure[];
   //private
 }
 export interface BasicBaan {
@@ -1645,7 +1627,6 @@ export interface BasicCamp {
   showCorrectAnswerAndScore: boolean;
   canAnswerTheQuestion: boolean;
   mealIds: Id[];
-  foodIds: Id[];
   canNongSeeAllAnswer: boolean;
   canNongSeeAllActionPlan: boolean;
   canNongSeeAllTrackingSheet: boolean;
@@ -1654,10 +1635,13 @@ export interface BasicCamp {
   canReadTimeOnMirror: boolean;
   nongCall: string;
   boyZoneLadyZoneState: BoyZoneLadyZoneState;
-  nongCampMemberCardIds: Id[];
-  peeCampMemberCardIds: Id[];
-  petoCampMemberCardIds: Id[];
   canNongSeeBaanOrder: boolean;
+  nongIds: Id[];
+  peeIds: Id[];
+  petoIds: Id[];
+  boardIds: Id[];
+  baanIds: Id[];
+  partIds: Id[];
   //public
 }
 export interface BasicPart {
@@ -1970,6 +1954,8 @@ export const socketEvents = [
   "updateItem",
   "updatePartJob",
   "updateBaanJob",
+  "updateGewertzSquareBookingAll",
+  "updateGewertzSquareBookingOwn",
 ] as const;
 export type SocketEvent = (typeof socketEvents)[number];
 export type QuestionType =
@@ -2308,7 +2294,75 @@ export interface InterUniversityStaff {
   shortActivityIds: Id[];
   selectOffsetId: Id;
   displayOffsetId: Id;
+  gewertzSquareBookingIds: Id[];
+  fridayActEn: boolean;
+  departureAuths: Departure[];
+  _id:Id
   //private
 }
-export const userTypes = ["student", "guest", "universityStaff"] as const;
+export const userTypes = ["student", "universityStaff"] as const;
 export type UserType = (typeof userTypes)[number];
+export const gewertzSquareRoomTypes = [
+  "Spark1",
+  "Spark2",
+  "Spark3",
+  "Spark1&2",
+  "Spark2&3",
+  "Spark1&2&3",
+  "E-III",
+  "Demo form",
+] as const;
+export type GewertzSquareRoomType = (typeof gewertzSquareRoomTypes)[number];
+export const gewertzSquareAvailableTimes = [
+  8, 9, 10, 11, 12, 13, 14, 15, 16,
+] as const;
+export type GewertzSquareAvailableTime =
+  (typeof gewertzSquareAvailableTimes)[number];
+export const gewertzSquareMaxContinue = 3;
+export interface InterGewertzSquareBooking {
+  day: number;
+  month: number;
+  year: number;
+  time: GewertzSquareAvailableTime;
+  room: GewertzSquareRoomType;
+  userId: Id;
+  userType: UserType;
+  _id: Id;
+  tel: string;
+  period: number;
+}
+export interface BookingGewertzSquareRoom {
+  day: number;
+  month: number;
+  year: number;
+  time: GewertzSquareAvailableTime;
+  room: GewertzSquareRoomType;
+  tel: string;
+  period: number;
+}
+export interface CommonUser {
+  gewertzSquareBookingIds: Id[];
+  _id: Id;
+  name: string;
+  lastname: string;
+  nickname: string;
+  fridayActEn: boolean;
+  departureAuths: Departure[];
+  tel: string;
+}
+export interface GetGewertzSquareBooking {
+  all: InterGewertzSquareBooking[];
+  own: InterGewertzSquareBooking[];
+}
+export interface UpdateBookingGewertzSquareRoom
+  extends BookingGewertzSquareRoom {
+  _id: Id;
+}
+export interface UpdateUniversityStaff {
+  name: string;
+  lastname: string;
+  nickname: string;
+  email: string;
+  tel: string;
+  //private
+}

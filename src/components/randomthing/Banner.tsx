@@ -3,13 +3,10 @@
 import { useSession } from "next-auth/react";
 import styles from "./banner.module.css";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import LarnImage from "../../larn.jpg";
-import GearImage from "../../Gears.png";
 import React from "react";
 //import
 export default function Banner() {
-  const router = useRouter();
   const [index, setIndex] = React.useState(0);
 
   const { data: session } = useSession();
@@ -68,7 +65,7 @@ export default function Banner() {
           {session.user?.name}
         </div>
       ) : null}
-      <button
+      {/* <button
         onClick={(e) => {
           e.stopPropagation();
           router.push("/camp");
@@ -102,7 +99,7 @@ export default function Banner() {
             opacity: "0.6",
           }}
         />
-      </button>
+      </button> */}
       <div style={{ height: "130%" }}></div>
     </div>
   );

@@ -1,17 +1,13 @@
 "use client";
 import bypassRole from "@/libs/user/bypassRole";
-import { updateBottle } from "@/libs/user/updateBottle";
-import { updateProfile } from "@/libs/user/updateProfile";
-import updateSize from "@/libs/user/updateSize";
-import updateSleep from "@/libs/user/updateSleep";
-import { Checkbox, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React from "react";
-import { InterUser, Size } from "../../../interface";
+import { InterUser } from "../../../interface";
 import FinishButton from "../utility/FinishButton";
-import SelectSize from "../utility/SelectSize";
-import { setTextToString, setBoolean } from "../utility/setup";
+import { setTextToString } from "../utility/setup";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
+import updateUniversityStaff from "@/libs/user/updateUniversityStaff";
 
 // note fixed text box border bg-white ,width to 60%, title color ,button color &  mx-2, checkbox color
 
@@ -28,11 +24,6 @@ export default function UpdateProfileRaw({
   const [nickname, setNickname] = React.useState<string>(user.nickname);
   const [lastname, setLastname] = React.useState<string>(user.lastname);
   const [citizenId, setCitizenId] = React.useState<string>(user.citizenId);
-  const [shirtSize, setShirtSize] = React.useState<Size>(user.shirtSize);
-  const [haveBottle, setHaveBottle] = React.useState<boolean>(user.haveBottle);
-  const [likeToSleepAtCamp, setLikeToSleepAtCamp] = React.useState<boolean>(
-    user.likeToSleepAtCamp
-  );
   const [key, setKey] = React.useState<string>("");
   const router = useRouter();
   if (!session) {
@@ -219,39 +210,6 @@ export default function UpdateProfileRaw({
             value={citizenId}
           />
         </div>
-        <div className="flex flex-row items-center my-5">
-          <label className="w-2/5 text-2xl text-white">เลือกขนาดเสื้อ</label>
-          <SelectSize select={setShirtSize} def={user.shirtSize} />
-        </div>
-        <div className="flex flex-row items-center my-5">
-          <label className="w-2/5 text-2xl text-white">
-            มีกระติกน้ำหรือไม่
-          </label>
-          <Checkbox
-            onChange={setBoolean(setHaveBottle)}
-            sx={{
-              "&.Mui-checked": {
-                color: "#FFFFFF", // Custom color when checked
-              },
-            }}
-            checked={user.haveBottle}
-          />
-        </div>
-        <div className="flex flex-row justify-end"></div>
-        <div className="flex flex-row items-center my-5">
-          <label className="w-2/5 text-2xl text-white">
-            ประสงค์นอนในค่ายหรือไม่
-          </label>
-          <Checkbox
-            onChange={setBoolean(setLikeToSleepAtCamp)}
-            sx={{
-              "&.Mui-checked": {
-                color: "#FFFFFF", // Custom color when checked
-              },
-            }}
-            checked={user.likeToSleepAtCamp}
-          />
-        </div>
         <div className="flex flex-row justify-end">
           <button
             className="bg-white p-3 mx-2 font-medium rounded-lg shadow-[10px_10px_10px_-10px_rgba(0,0,0,0.5)] hover:bg-rose-700"
@@ -271,18 +229,10 @@ export default function UpdateProfileRaw({
             }}
             onClick={() => {
               try {
-                updateProfile(
-                  email,
-                  tel,
-                  name,
-                  nickname,
-                  lastname,
-                  citizenId,
+                updateUniversityStaff(
+                  { email, tel, name, nickname, lastname },
                   session.user.token
                 );
-                updateSize(shirtSize, session.user.token);
-                updateBottle(haveBottle, session.user.token);
-                updateSleep(likeToSleepAtCamp, session.user.token);
               } catch (error) {
                 console.log(error);
               }

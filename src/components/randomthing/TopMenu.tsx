@@ -7,7 +7,7 @@ import getTimeOffset from "@/libs/user/getTimeOffset";
 import getSystemInfo from "@/libs/randomthing/getSystemInfo";
 import Logo from "../utility/Logo";
 import React from "react";
-import getUnivercityStaffMe from "@/libs/user/getUniversityStaffMe";
+import getUniversityStaffMe from "@/libs/user/getUniversityStaffMe";
 import GetTimeHtml from "../utility/GetTimeHtml";
 export default async function TopMenu() {
   const monthArray = [
@@ -28,9 +28,9 @@ export default async function TopMenu() {
   const session = await getServerSession(authOptions);
   const { systemMode } = await getSystemInfo();
   if (session) {
-    const user = await getUnivercityStaffMe(session.user.token);
+    const user = await getUniversityStaffMe(session.user.token);
     const timeOffset = await getTimeOffset(user.displayOffsetId);
-    console.log(user,timeOffset)
+    console.log(user, timeOffset);
     return (
       // not login
       <div className={styles.menucontainer}>
@@ -39,6 +39,7 @@ export default async function TopMenu() {
         <div>{systemMode}</div>
         <div className="flex flex-row absolute right-10 top-0 h-full py-2 text-center">
           <TopMenuItem title="weather" pageRef="/weather" />
+          <TopMenuItem title="gewertz square" pageRef="/gewertzSquare" />
           <TopMenuItem title="Update Profile" pageRef="/updateProfile" />
           <TopMenuItem title="Sign Out" pageRef="/api/auth/signout" />
           <TopMenuItem title="Home" pageRef="/" />
@@ -66,6 +67,7 @@ export default async function TopMenu() {
         <div>{systemMode}</div>
         <div className="flex flex-row absolute right-10 top-0 h-full py-2 text-center">
           <TopMenuItem title="weather" pageRef="/weather" />
+          <TopMenuItem title="gewertz square" pageRef="/gewertzSquare" />
           <TopMenuItem title="Sign In" pageRef="/api/auth/signin" />
           <TopMenuItem title="Register" pageRef="/signup" />
           <TopMenuItem title="Home" pageRef="/" />
