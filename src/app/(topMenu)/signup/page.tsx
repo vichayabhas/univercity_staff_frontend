@@ -1,6 +1,6 @@
 "use client";
 import { setTextToString } from "@/components/utility/setup";
-import univercityStaffRegisteregister from "@/libs/user/universityStaffRegister";
+import universityStaffRegister from "@/libs/user/universityStaffRegister";
 import { TextField } from "@mui/material";
 import Link from "next/link";
 import React from "react";
@@ -194,7 +194,7 @@ export default function signupPage() {
             onClick={async () => {
               if (name && tel && email && password) {
                 try {
-                  await univercityStaffRegisteregister({
+                  await universityStaffRegister({
                     name,
                     tel,
                     email,
