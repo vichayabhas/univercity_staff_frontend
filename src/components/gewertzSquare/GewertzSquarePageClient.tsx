@@ -46,8 +46,11 @@ const monthArray = [
 ];
 function isAvailableGewertzSquareRoom(
   oldBookings: InterGewertzSquareBooking[],
-  room: GewertzSquareRoomType
+  room: GewertzSquareRoomType | null
 ) {
+  if (!room) {
+    return true;
+  }
   const oldRooms = oldBookings.map(({ room }) => room);
   if (oldRooms.includes(room)) {
     return false;
@@ -130,6 +133,7 @@ export default function GewertzSquarePageClient({
   while (i < gewertzSquareMaxContinue) {
     availablePeriod.push(++i);
   }
+
   React.useEffect(() => {
     ownSocket.listen(setOwns);
     allSocket.listen(setAlls);
@@ -141,6 +145,75 @@ export default function GewertzSquarePageClient({
   return (
     <div>
       <div>
+        <div>
+          <label>เลือกห้อง</label>
+          <Select value={room} renderValue={copy}>
+            {gewertzSquareRoomTypes
+              // .filter((gewertzSquareRoomType) => {
+              //   return true;
+              // if (
+              //   time + period - 1 >
+              //   gewertzSquareAvailableTimes[
+              //     gewertzSquareAvailableTimes.length - 1
+              //   ]
+              // ) {
+              //   return false;
+              // }
+              // let i = 0;
+              // while (i < gewertzSquareMaxContinue) {
+              //   const oldBookings = alls.filter(
+              //     (oldBooking) =>
+              //       oldBooking.period > i &&
+              //       oldBooking.day == day &&
+              //       oldBooking.month == month &&
+              //       oldBooking.year == year &&
+              //       oldBooking.time == time - i
+              //   );
+              //   if (
+              //     !isAvailableGewertzSquareRoom(
+              //       oldBookings,
+              //       gewertzSquareRoomType
+              //     )
+              //   ) {
+              //     return false;
+              //   }
+              //   if (time - ++i < gewertzSquareAvailableTimes[0]) {
+              //     break;
+              //   }
+              // }
+              // i = 0;
+              // while (i < period - 1) {
+              //   const oldBookings = alls.filter(
+              //     (oldBooking) =>
+              //       oldBooking.day == day &&
+              //       oldBooking.month == month &&
+              //       oldBooking.year == year &&
+              //       oldBooking.time == time + ++i
+              //   );
+              //   if (
+              //     !isAvailableGewertzSquareRoom(
+              //       oldBookings,
+              //       gewertzSquareRoomType
+              //     )
+              //   ) {
+              //     return false;
+              //   }
+              // }
+              // return true;
+              // })
+              .map((gewertzSquareRoomType, i) => {
+                return (
+                  <MenuItem
+                    key={i}
+                    onClick={() => setRoom(gewertzSquareRoomType)}
+                    value={gewertzSquareRoomType}
+                  >
+                    {gewertzSquareRoomType}
+                  </MenuItem>
+                );
+              })}
+          </Select>
+        </div>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div>
             <label>เลือกวันที่:</label>
@@ -161,22 +234,6 @@ export default function GewertzSquarePageClient({
           </div>
         </LocalizationProvider>
         <div>
-          <label>เลือกเวลา</label>
-          <Select value={time} renderValue={copy}>
-            {gewertzSquareAvailableTimes.map(
-              (gewertzSquareAvailableTime, i) => (
-                <MenuItem
-                  key={i}
-                  onClick={() => setTime(gewertzSquareAvailableTime)}
-                  value={gewertzSquareAvailableTime}
-                >
-                  {gewertzSquareAvailableTime}
-                </MenuItem>
-              )
-            )}
-          </Select>
-        </div>
-        <div>
           <label>จำนวนชั่วโมง</label>
           <Select value={period} renderValue={copy}>
             {availablePeriod.map((period, i) => (
@@ -191,10 +248,10 @@ export default function GewertzSquarePageClient({
           </Select>
         </div>
         <div>
-          <label>เลือกห้อง</label>
-          <Select value={room} renderValue={copy}>
-            {gewertzSquareRoomTypes
-              .filter((gewertzSquareRoomType) => {
+          <label>เลือกเวลา</label>
+          <Select value={time} renderValue={copy}>
+            {gewertzSquareAvailableTimes
+              .filter((time) => {
                 if (
                   time + period - 1 >
                   gewertzSquareAvailableTimes[
@@ -213,12 +270,7 @@ export default function GewertzSquarePageClient({
                       oldBooking.year == year &&
                       oldBooking.time == time - i
                   );
-                  if (
-                    !isAvailableGewertzSquareRoom(
-                      oldBookings,
-                      gewertzSquareRoomType
-                    )
-                  ) {
+                  if (!isAvailableGewertzSquareRoom(oldBookings, room)) {
                     return false;
                   }
                   if (time - ++i < gewertzSquareAvailableTimes[0]) {
@@ -234,28 +286,21 @@ export default function GewertzSquarePageClient({
                       oldBooking.year == year &&
                       oldBooking.time == time + ++i
                   );
-                  if (
-                    !isAvailableGewertzSquareRoom(
-                      oldBookings,
-                      gewertzSquareRoomType
-                    )
-                  ) {
+                  if (!isAvailableGewertzSquareRoom(oldBookings, room)) {
                     return false;
                   }
                 }
                 return true;
               })
-              .map((gewertzSquareRoomType, i) => {
-                return (
-                  <MenuItem
-                    key={i}
-                    onClick={() => setRoom(gewertzSquareRoomType)}
-                    value={gewertzSquareRoomType}
-                  >
-                    {gewertzSquareRoomType}
-                  </MenuItem>
-                );
-              })}
+              .map((gewertzSquareAvailableTime, i) => (
+                <MenuItem
+                  key={i}
+                  onClick={() => setTime(gewertzSquareAvailableTime)}
+                  value={gewertzSquareAvailableTime}
+                >
+                  {gewertzSquareAvailableTime}
+                </MenuItem>
+              ))}
           </Select>
         </div>
         <div>
@@ -263,7 +308,9 @@ export default function GewertzSquarePageClient({
           <TextField value={tel} onChange={setTextToString(setTel)} />
         </div>
       </div>
-      {token ? (
+      {token &&
+      user &&
+      user.departureAuths.includes("วิศวกรรมไฟฟ้า (Electrical Engineering)") ? (
         <div>
           <FinishButton
             text="จอง"
@@ -484,6 +531,48 @@ export default function GewertzSquarePageClient({
                   </tr>
                 );
               }
+            })}
+          </table>
+        </div>
+      ) : null}
+      {user && token && user.extraAuth.includes("gewertz square admin") ? (
+        <div>
+          <table>
+            <tr>
+              <th>วัน</th>
+              <th>เดือน</th>
+              <th>ปี</th>
+              <th>เวลา</th>
+              <th>จำนวนชั่วโมง</th>
+              <th>ห้อง</th>
+              <th>tel</th>
+              <th>delete</th>
+            </tr>
+            {alls.map((own, i) => {
+              return (
+                <tr key={i}>
+                  <td>{own.day}</td>
+                  <td>{monthArray[own.month]}</td>
+                  <td>{own.year}</td>
+                  <td>{own.time}</td>
+                  <td>{own.period}</td>
+                  <td>{own.room}</td>
+                  <td>{own.tel}</td>
+                  <td>
+                    <FinishButton
+                      text="delete"
+                      onClick={() => {
+                        deleteBookingGewertzSquareRoom(
+                          own._id,
+                          token,
+                          ownSocket,
+                          allSocket
+                        );
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
             })}
           </table>
         </div>
